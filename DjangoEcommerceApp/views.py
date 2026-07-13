@@ -30,6 +30,8 @@ def adminLoginProcess(request):
     user=authenticate(request=request,username=username,password=password)
     if user is not None:
         login(request=request,user=user)
+        if user.user_type == "4":
+            return HttpResponseRedirect(reverse("home_page"))
         return HttpResponseRedirect(reverse("admin_home"))
     else:
         messages.error(request,"Error in Login! Invalid Login Details!")

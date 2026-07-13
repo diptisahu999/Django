@@ -25,5 +25,5 @@ from DjangoEcommerce import settings
 
 urlpatterns = [
     path('admindashboard/',include("DjangoEcommerceApp.adminurls")),
-    path('', RedirectView.as_view(url='/admindashboard/admin/', permanent=False)),
+    path('',include("DjangoEcommerceApp.fronturls")),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

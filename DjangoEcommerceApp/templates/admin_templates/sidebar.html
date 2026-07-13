@@ -9,7 +9,11 @@
       </div>
       <ul class="sidebar-menu">
         <li class="menu-header">Dashboard</li>
+        <li class="">
+          <a class="nav-link" href="{% url 'home_page' %}" target="_blank"><i class="fas fa-store"></i> <span>Visit Storefront</span></a>
+        </li>
         {% comment %} CATEGORY MENU {% endcomment %}
+        {% if request.user.user_type == "1" or request.user.user_type == "2" %}
         {% url 'category_list' as category_list %}
         {% url 'category_create' as category_create %}
         {% url 'category_update' id as category_update %}
@@ -20,9 +24,10 @@
             <li class='{% if request.path == category_create %} active {% endif %}'><a class="nav-link" href="{% url 'category_create' %}">Add Categories</a></li>
           </ul>
         </li>
-
+        {% endif %}
 
         {% comment %} SUB CATEGORY MENU {% endcomment %}
+        {% if request.user.user_type == "1" or request.user.user_type == "2" %}
         {% url 'sub_category_list' as sub_category_list %}
         {% url 'sub_category_create' as sub_category_create %}
         {% url 'sub_category_update' id as sub_category_update %}
@@ -33,9 +38,10 @@
             <li class='{% if request.path == sub_category_create %} active {% endif %}'><a class="nav-link" href="{% url 'sub_category_create' %}">Add Sub Categories</a></li>
           </ul>
         </li>
-
+        {% endif %}
         
         {% comment %} Merchant User MENU {% endcomment %}
+        {% if request.user.user_type == "1" or request.user.user_type == "2" %}
         {% url 'merchant_create' as merchant_create %}
         {% url 'merchant_list' as merchant_list %}
         {% url 'merchant_update' id as merchant_update %}
@@ -46,6 +52,7 @@
             <li class='{% if request.path == merchant_list %} active {% endif %} {% if request.path == merchant_update %} active {% endif %}' ><a class="nav-link" href="{% url 'merchant_list' %}">Merchant User List</a></li>
           </ul>
         </li>  
+        {% endif %}
         {% comment %} STAFF USER URLS {% endcomment %}
         {% if request.user.user_type == "1" %}
         {% url 'staff_create' as staff_create %}
@@ -60,6 +67,7 @@
         </li>      
         {% endif %}
         {% comment %} CUSTOMER USER URLS {% endcomment %}
+        {% if request.user.user_type == "1" or request.user.user_type == "2" %}
         {% url 'customer_create' as customer_create %}
         {% url 'customer_list' as customer_list %}
         {% url 'customer_update' id as customer_update %}
@@ -70,7 +78,8 @@
             <li class='{% if request.path == customer_list %} active {% endif %} {% if request.path == customer_update %} active {% endif %}' ><a class="nav-link" href="{% url 'customer_list' %}">Customer User List</a></li>
           </ul>
         </li>      
-       
+        {% endif %}
+        {% if request.user.user_type != "4" %}
        {% url 'product_view' as product_view %}
        {% url 'product_list' as product_list %}
        {% url 'product_edit' product.id as product_edit %}
@@ -84,6 +93,7 @@
             <li class='{% if request.path == product_list %} active {% endif %} {% if request.path == product_edit %} active {% endif %} {% if request.path == product_add_media %} active {% endif %}{% if request.path == product_edit_media %} active {% endif %}{% if request.path == product_add_stocks %} active {% endif %}'><a class="nav-link" href="{% url 'product_list' %}">Product List</a></li>
           </ul>
         </li>
+        {% endif %}
       </ul>
 
       <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
