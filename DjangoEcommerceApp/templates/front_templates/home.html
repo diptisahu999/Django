@@ -26,9 +26,13 @@
                     <!-- Product Image -->
                     <div class="position-relative product-img-wrapper">
                         {% if item.media %}
-                            <img src="/media/{{ item.media.media_content }}" class="card-img-top product-img" alt="{{ item.product.product_name }}">
+                            <a href="{% url 'product_details' item.product.url_slug %}">
+                                <img src="/media/{{ item.media.media_content }}" class="card-img-top product-img" alt="{{ item.product.product_name }}">
+                            </a>
                         {% else %}
-                            <img src="{% static '/img/news/img13.jpg' %}" class="card-img-top product-img" alt="Placeholder">
+                            <a href="{% url 'product_details' item.product.url_slug %}">
+                                <img src="{% static '/img/news/img13.jpg' %}" class="card-img-top product-img" alt="Placeholder">
+                            </a>
                         {% endif %}
                         <div class="product-overlay d-flex align-items-center justify-content-center">
                             <button class="btn btn-primary rounded-circle btn-icon mx-1 shadow" title="Quick View"><i class="fas fa-eye"></i></button>
@@ -44,7 +48,7 @@
                         
                         <!-- Title -->
                         <h5 class="card-title text-dark font-weight-bold mb-1 product-title">
-                            <a href="#" class="text-dark text-decoration-none stretched-link-removed">{{ item.product.product_name }}</a>
+                            <a href="{% url 'product_details' item.product.url_slug %}" class="text-dark text-decoration-none stretched-link-removed">{{ item.product.product_name }}</a>
                         </h5>
                         
                         <!-- Rating Placeholder -->
@@ -65,9 +69,13 @@
                                 <br><small class="text-muted"><del>${{ item.product.product_max_price }}</del></small>
                                 {% endif %}
                             </div>
-                            <button class="btn btn-outline-primary btn-sm rounded-pill font-weight-bold px-3 add-to-cart-btn z-index-2">
-                                <i class="fas fa-plus"></i> Add
-                            </button>
+                            <form action="{% url 'add_to_cart' item.product.id %}" method="POST" class="z-index-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="qty" value="1">
+                                <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill font-weight-bold px-3 add-to-cart-btn">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

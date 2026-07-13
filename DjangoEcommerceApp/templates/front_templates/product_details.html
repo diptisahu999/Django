@@ -1,0 +1,159 @@
+{% extends 'front_templates/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.product_name }}{% endblock title %}
+
+{% block content %}
+<!-- Product Breadcrumbs -->
+<div class="bg-light py-2 border-bottom mb-4">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 m-0 small font-weight-bold">
+                <li class="breadcrumb-item"><a href="{% url 'home_page' %}" class="text-muted">Home</a></li>
+                <li class="breadcrumb-item text-muted">{{ product.subcategories_id.category_id.title }}</li>
+                <li class="breadcrumb-item text-muted">{{ product.subcategories_id.title }}</li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">{{ product.product_name|truncatechars:30 }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <!-- Left Column: Images -->
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <div class="d-flex">
+                <!-- Thumbnails -->
+                <div class="d-flex flex-column mr-3" style="width: 60px;">
+                    {% for media in product_media %}
+                        <div class="border rounded mb-2 overflow-hidden cursor-pointer img-thumbnail-btn" onclick="document.getElementById('mainProductImage').src='/media/{{ media.media_content }}'">
+                            <img src="/media/{{ media.media_content }}" class="img-fluid" alt="Thumbnail">
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Main Image -->
+                <div class="flex-grow-1 border rounded p-3 d-flex align-items-center justify-content-center bg-white" style="height: 500px;">
+                    {% if product_media %}
+                        <img id="mainProductImage" src="/media/{{ product_media.0.media_content }}" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="{{ product.product_name }}">
+                    {% else %}
+                        <img id="mainProductImage" src="{% static '/img/news/img13.jpg' %}" class="img-fluid" alt="Placeholder">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Column: Details -->
+        <div class="col-lg-4 mb-4 mb-lg-0">
+            <h1 class="h4 font-weight-bold text-dark mb-2">{{ product.product_name }}</h1>
+            <div class="text-primary mb-2"><a href="#">Visit the {{ product.brand }} Store</a></div>
+            
+            <div class="d-flex align-items-center mb-3 border-bottom pb-3">
+                <div class="text-warning mr-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <a href="#" class="text-primary small">4.4 (8,378 ratings)</a>
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex align-items-baseline mb-1">
+                    <span class="text-danger h4 font-weight-normal mr-2">-22%</span>
+                    <span class="h3 font-weight-bold text-dark">₹{{ product.product_discount_price }}</span>
+                </div>
+                <div class="small text-muted mb-2">M.R.P.: <del>₹{{ product.product_max_price }}</del></div>
+                <div class="small">Inclusive of all taxes</div>
+                <div class="small"><strong>EMI</strong> starts at ₹439. No Cost EMI available <a href="#">EMI options <i class="fas fa-chevron-down"></i></a></div>
+            </div>
+
+            <!-- Offers Section -->
+            <div class="d-flex mb-4 overflow-auto pb-2" style="gap: 10px;">
+                <div class="border rounded p-2 shadow-sm" style="min-width: 130px;">
+                    <div class="font-weight-bold small mb-1"><i class="fas fa-tags text-warning mr-1"></i> Cashback</div>
+                    <div class="small text-muted">Upto ₹374.00 cashback as Amazon Pay Balance...</div>
+                </div>
+                <div class="border rounded p-2 shadow-sm" style="min-width: 130px;">
+                    <div class="font-weight-bold small mb-1"><i class="fas fa-percent text-warning mr-1"></i> Bank Offer</div>
+                    <div class="small text-muted">Upto ₹1,000.00 discount on select Credit Cards...</div>
+                </div>
+            </div>
+
+            <!-- About Item -->
+            {% if product_about %}
+            <h5 class="font-weight-bold mb-3">About this item</h5>
+            <ul class="pl-3 text-dark small">
+                {% for about in product_about %}
+                <li class="mb-2">{{ about.title }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
+            <hr>
+            <p class="small text-dark">{{ product.product_description }}</p>
+        </div>
+
+        <!-- Right Column: Buy Box -->
+        <div class="col-lg-3">
+            <div class="card border border-dark rounded">
+                <div class="card-body">
+                    <div class="font-weight-bold text-dark h5 mb-3">₹{{ product.product_discount_price }}</div>
+                    
+                    <div class="small text-primary mb-2">FREE scheduled delivery as soon as <strong>Saturday, 18 July, 7 am - 9 pm</strong>. <a href="#">Details</a></div>
+                    <div class="small mb-3"><a href="#" class="text-primary"><i class="fas fa-map-marker-alt mr-1"></i> Delivering to Surat 395007 - Update location</a></div>
+                    
+                    <h5 class="text-success font-weight-bold mb-3">In stock</h5>
+                    
+                    <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="qty" class="sr-only">Quantity:</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-light text-dark font-weight-bold">Quantity:</span>
+                                </div>
+                                <select name="qty" id="qty" class="custom-select shadow-sm font-weight-bold">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-warning btn-block rounded-pill font-weight-bold mb-2 shadow-sm">Add to cart</button>
+                        <button type="button" class="btn btn-secondary btn-block rounded-pill font-weight-bold shadow-sm" style="background-color: #ffa41c; border-color: #ffa41c; color: #111;">Buy Now</button>
+                    </form>
+                    
+                    <div class="d-flex justify-content-between small text-muted mt-3">
+                        <div>Ships from</div>
+                        <div class="text-dark">SuperCodersStore</div>
+                    </div>
+                    <div class="d-flex justify-content-between small text-muted mt-1">
+                        <div>Sold by</div>
+                        <div class="text-primary">{{ product.added_by_merchant.company_name|default:"SuperCodersRetail" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.cursor-pointer { cursor: pointer; }
+.img-thumbnail-btn:hover { border-color: #007bff !important; box-shadow: 0 0 5px rgba(0,123,255,0.5); }
+</style>
+{% endblock content %}
