@@ -44,7 +44,7 @@ class Categories(models.Model):
     thumbnail=models.FileField()
     description=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
-    is_active=models.IntegerField(default=1)
+    is_active=models.IntegerField(default=1, choices=((1, 'Active'), (0, 'Inactive')))
 
     def get_absolute_url(self):
         return reverse("category_list")
@@ -63,7 +63,7 @@ class SubCategories(models.Model):
     thumbnail=models.FileField()
     description=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
-    is_active=models.IntegerField(default=1)
+    is_active=models.IntegerField(default=1, choices=((1, 'Active'), (0, 'Inactive')))
 
     def get_absolute_url(self):
         return reverse("sub_category_list")

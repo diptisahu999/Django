@@ -14,9 +14,9 @@ def home_page(request):
         if products.exists():
             product_list = []
             for product in products:
-                media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).first()
+                media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).last()
                 if not media:
-                    media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).first()
+                    media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).last()
                     
                 product_list.append({
                     'product': product,
@@ -38,7 +38,7 @@ def product_details(request, product_slug):
     categories = Categories.objects.filter(is_active=1)
     product = get_object_or_404(Products, url_slug=product_slug, is_active=1)
     
-    product_media = ProductMedia.objects.filter(product_id=product.id, is_active=1)
+    product_media = ProductMedia.objects.filter(product_id=product.id, is_active=1).order_by('-id')
     product_details_list = ProductDetails.objects.filter(product_id=product.id, is_active=1)
     product_about = ProductAbout.objects.filter(product_id=product.id, is_active=1)
     product_tags = ProductTags.objects.filter(product_id=product.id, is_active=1)
@@ -84,9 +84,9 @@ def category_product_list(request, category_slug):
     
     product_list = []
     for product in products:
-        media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).first()
+        media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).last()
         if not media:
-            media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).first()
+            media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).last()
             
         product_list.append({
             'product': product,

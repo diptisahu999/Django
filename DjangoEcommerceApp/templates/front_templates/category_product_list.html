@@ -29,7 +29,7 @@
                 <div class="position-relative product-img-wrapper">
                     {% if item.media %}
                         <a href="{% url 'product_details' item.product.url_slug %}">
-                            <img src="/media/{{ item.media.media_content }}" class="card-img-top product-img" alt="{{ item.product.product_name }}">
+                            <img src="{{ item.media.media_content }}" class="card-img-top product-img" alt="{{ item.product.product_name }}">
                         </a>
                     {% else %}
                         <a href="{% url 'product_details' item.product.url_slug %}">

@@ -37,17 +37,30 @@
                 <!-- Thumbnails -->
                 <div class="d-flex flex-column mr-3" style="width: 60px;">
                     {% for media in product_media %}
-                        <div class="border rounded mb-2 overflow-hidden cursor-pointer img-thumbnail-btn" onclick="document.getElementById('mainProductImage').src='/media/{{ media.media_content }}'">
-                            <img src="/media/{{ media.media_content }}" class="img-fluid" alt="Thumbnail">
+                        {% if media.media_type == "1" or media.media_type == 1 %}
+                        <div class="border rounded mb-2 overflow-hidden cursor-pointer img-thumbnail-btn" onclick="showImage('{{ media.media_content }}')">
+                            <img src="{{ media.media_content }}" class="img-fluid" alt="Thumbnail">
                         </div>
+                        {% elif media.media_type == "2" or media.media_type == 2 %}
+                        <div class="border rounded mb-2 overflow-hidden cursor-pointer img-thumbnail-btn bg-dark text-white d-flex align-items-center justify-content-center" style="height: 60px;" onclick="showVideo('{{ media.media_content }}')">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
-                <!-- Main Image -->
+                <!-- Main Image/Video -->
                 <div class="flex-grow-1 border rounded p-3 d-flex align-items-center justify-content-center bg-white" style="height: 500px;">
                     {% if product_media %}
-                        <img id="mainProductImage" src="/media/{{ product_media.0.media_content }}" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="{{ product.product_name }}">
+                        {% if product_media.0.media_type == "1" or product_media.0.media_type == 1 %}
+                            <img id="mainProductImage" src="{{ product_media.0.media_content }}" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="{{ product.product_name }}">
+                            <video id="mainProductVideo" class="img-fluid" style="max-height: 100%; display: none;" controls></video>
+                        {% elif product_media.0.media_type == "2" or product_media.0.media_type == 2 %}
+                            <img id="mainProductImage" class="img-fluid" style="max-height: 100%; object-fit: contain; display: none;" alt="{{ product.product_name }}">
+                            <video id="mainProductVideo" src="{{ product_media.0.media_content }}" class="img-fluid" style="max-height: 100%;" controls></video>
+                        {% endif %}
                     {% else %}
                         <img id="mainProductImage" src="{% static '/img/news/img13.jpg' %}" class="img-fluid" alt="Placeholder">
+                        <video id="mainProductVideo" class="img-fluid" style="max-height: 100%; display: none;" controls></video>
                     {% endif %}
                 </div>
             </div>
@@ -157,3 +170,28 @@
 .img-thumbnail-btn:hover { border-color: #007bff !important; box-shadow: 0 0 5px rgba(0,123,255,0.5); }
 </style>
 {% endblock content %}
+
+{% block custom_js %}
+<script>
+function showImage(src) {
+    document.getElementById('mainProductImage').src = src;
+    document.getElementById('mainProductImage').style.display = 'block';
+    
+    var videoEl = document.getElementById('mainProductVideo');
+    if(videoEl) {
+        videoEl.style.display = 'none';
+        videoEl.pause();
+    }
+}
+function showVideo(src) {
+    var videoEl = document.getElementById('mainProductVideo');
+    videoEl.src = src;
+    videoEl.style.display = 'block';
+    
+    var imgEl = document.getElementById('mainProductImage');
+    if(imgEl) {
+        imgEl.style.display = 'none';
+    }
+}
+</script>
+{% endblock custom_js %}

@@ -30,7 +30,7 @@
                     <div class="position-relative product-img-wrapper" style="height: 200px; display: flex; align-items: center; justify-content: center;">
                         {% if item.media %}
                             <a href="{% url 'product_details' item.product.url_slug %}" class="d-block h-100 w-100 text-center">
-                                <img src="/media/{{ item.media.media_content }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" alt="{{ item.product.product_name }}">
+                                <img src="{{ item.media.media_content }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" alt="{{ item.product.product_name }}">
                             </a>
                         {% else %}
                             <a href="{% url 'product_details' item.product.url_slug %}" class="d-block h-100 w-100 text-center">
