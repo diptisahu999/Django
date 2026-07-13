@@ -19,9 +19,11 @@ from DjangoEcommerceApp import views
 from DjangoEcommerceApp import AdminViews
 from django.conf.urls.static import static
 from django.urls import include
+from django.views.generic import RedirectView
 
 from DjangoEcommerce import settings
 
 urlpatterns = [
-    path('admindashboard/',include("DjangoEcommerceApp.adminurls"))
+    path('admindashboard/',include("DjangoEcommerceApp.adminurls")),
+    path('', RedirectView.as_view(url='/admindashboard/admin/', permanent=False)),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
