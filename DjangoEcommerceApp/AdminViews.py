@@ -612,3 +612,13 @@ def update_user_status(request):
         except Exception as e:
             return JsonResponse({"error": True, "message": str(e)})
     return JsonResponse({"error": True, "message": "Invalid Request"})
+
+@login_required(login_url="/admin/")
+def staff_delete(request, pk):
+    try:
+        user = CustomUser.objects.get(id=pk)
+        user.delete()
+        messages.success(request, "Staff User Deleted Successfully")
+    except Exception as e:
+        messages.error(request, f"Error deleting staff user: {str(e)}")
+    return HttpResponseRedirect(reverse("staff_list"))

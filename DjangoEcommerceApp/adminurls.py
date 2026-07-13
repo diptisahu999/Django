@@ -61,6 +61,7 @@ urlpatterns = [
     path('staff_create',AdminViews.StaffUserCreateView.as_view(),name="staff_create"),
     path('staff_list',AdminViews.StaffUserListView.as_view(),name="staff_list"),
     path('staff_update/<slug:pk>',AdminViews.StaffUserUpdateView.as_view(),name="staff_update"),
+    path('staff_delete/<slug:pk>',AdminViews.staff_delete,name="staff_delete"),
 
     #Customer User
     path('customer_create',AdminViews.CustomerUserCreateView.as_view(),name="customer_create"),

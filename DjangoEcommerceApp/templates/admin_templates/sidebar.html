@@ -47,6 +47,7 @@
           </ul>
         </li>  
         {% comment %} STAFF USER URLS {% endcomment %}
+        {% if request.user.user_type == "1" %}
         {% url 'staff_create' as staff_create %}
         {% url 'staff_list' as staff_list %}
         {% url 'staff_update' id as staff_update %}
@@ -57,6 +58,7 @@
             <li class='{% if request.path == staff_list %} active {% endif %} {% if request.path == staff_update %} active {% endif %}' ><a class="nav-link" href="{% url 'staff_list' %}">Staff User List</a></li>
           </ul>
         </li>      
+        {% endif %}
         {% comment %} CUSTOMER USER URLS {% endcomment %}
         {% url 'customer_create' as customer_create %}
         {% url 'customer_list' as customer_list %}
