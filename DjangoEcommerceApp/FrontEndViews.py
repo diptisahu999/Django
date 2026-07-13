@@ -99,3 +99,69 @@ def category_product_list(request, category_slug):
         'product_list': product_list,
     }
     return render(request, "front_templates/category_product_list.html", context)
+
+def cart_view(request):
+    categories = Categories.objects.filter(is_active=1)
+    cart = request.session.get('cart', {})
+    
+    cart_items = []
+    subtotal = 0
+    
+    for pid, qty in cart.items():
+        try:
+            product = Products.objects.get(id=pid, is_active=1)
+            media = ProductMedia.objects.filter(product_id=product.id, is_active=1).order_by('-id').first()
+            
+            # Use discount price if available, else max price
+            price_str = product.product_discount_price if product.product_discount_price else product.product_max_price
+            # Extract numbers from price string if it has currency symbols
+            import re
+            price_match = re.search(r'[\d\.]+', str(price_str))
+            price = float(price_match.group()) if price_match else 0
+            
+            item_total = price * qty
+            subtotal += item_total
+            
+            cart_items.append({
+                'product': product,
+                'media': media,
+                'qty': qty,
+                'price': price,
+                'item_total': item_total
+            })
+        except Products.DoesNotExist:
+            continue
+            
+    # Assuming a flat $10 shipping or tax for placeholder
+    tax_shipping = 10 if cart_items else 0
+    grand_total = subtotal + tax_shipping
+    
+    context = {
+        'categories': categories,
+        'cart_items': cart_items,
+        'subtotal': subtotal,
+        'tax_shipping': tax_shipping,
+        'grand_total': grand_total,
+    }
+    
+    return render(request, "front_templates/cart.html", context)
+
+def update_cart(request, product_id, action):
+    if 'cart' in request.session:
+        cart = request.session['cart']
+        pid = str(product_id)
+        
+        if pid in cart:
+            if action == 'increase':
+                cart[pid] += 1
+            elif action == 'decrease':
+                cart[pid] -= 1
+                if cart[pid] <= 0:
+                    del cart[pid]
+            elif action == 'remove':
+                del cart[pid]
+                
+        request.session['cart'] = cart
+        request.session.modified = True
+        
+    return redirect('cart_view')

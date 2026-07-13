@@ -413,9 +413,14 @@ class ProductMediaDelete(View):
         import os
         from DjangoEcommerce import settings
 
-        #It will work too Sometimes
-        #product_media.media_content.delete()
-        os.remove(settings.MEDIA_ROOT.replace("\media","")+str(product_media.media_content).replace("/","\\"))
+        import urllib.parse
+        try:
+            file_url = urllib.parse.unquote(str(product_media.media_content))
+            file_path = os.path.normpath(str(settings.BASE_DIR) + file_url)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            pass
         
         product_id=product_media.product_id.id
         product_media.delete()
