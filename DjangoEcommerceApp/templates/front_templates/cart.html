@@ -51,7 +51,7 @@
                                                 {% endif %}
                                             </div>
                                             <div>
-                                                <a href="{% url 'product_details' item.product.url_slug %}" class="text-dark font-weight-bold d-block mb-1">{{ item.product.product_name }}</a>
+                                                <a href="{% url 'product_details' item.product.id item.product.url_slug %}" class="text-dark font-weight-bold d-block mb-1">{{ item.product.product_name }}</a>
                                                 <small class="text-muted d-block">Brand: {{ item.product.brand }}</small>
                                             </div>
                                         </div>

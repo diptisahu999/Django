@@ -34,9 +34,9 @@ def home_page(request):
     }
     return render(request, "front_templates/home.html", context)
 
-def product_details(request, product_slug):
+def product_details(request, product_id, product_slug):
     categories = Categories.objects.filter(is_active=1)
-    product = get_object_or_404(Products, url_slug=product_slug, is_active=1)
+    product = get_object_or_404(Products, id=product_id, url_slug=product_slug, is_active=1)
     
     product_media = ProductMedia.objects.filter(product_id=product.id, is_active=1).order_by('-id')
     product_details_list = ProductDetails.objects.filter(product_id=product.id, is_active=1)

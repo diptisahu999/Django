@@ -28,11 +28,11 @@
                 <!-- Product Image -->
                 <div class="position-relative product-img-wrapper">
                     {% if item.media %}
-                        <a href="{% url 'product_details' item.product.url_slug %}">
+                        <a href="{% url 'product_details' item.product.id item.product.url_slug %}">
                             <img src="{{ item.media.media_content }}" class="card-img-top product-img" alt="{{ item.product.product_name }}">
                         </a>
                     {% else %}
-                        <a href="{% url 'product_details' item.product.url_slug %}">
+                        <a href="{% url 'product_details' item.product.id item.product.url_slug %}">
                             <img src="{% static '/img/news/img13.jpg' %}" class="card-img-top product-img" alt="Placeholder">
                         </a>
                     {% endif %}
@@ -45,7 +45,7 @@
                     
                     <!-- Title -->
                     <h5 class="card-title text-dark font-weight-bold mb-1 product-title">
-                        <a href="{% url 'product_details' item.product.url_slug %}" class="text-dark text-decoration-none">{{ item.product.product_name }}</a>
+                        <a href="{% url 'product_details' item.product.id item.product.url_slug %}" class="text-dark text-decoration-none">{{ item.product.product_name }}</a>
                     </h5>
                     
                     <!-- Rating Placeholder -->
