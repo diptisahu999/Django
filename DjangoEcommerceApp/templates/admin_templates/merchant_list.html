@@ -65,7 +65,7 @@ Merchant User List
         <p class=""><span class="badge badge-info"><i class="fas fa-lock"></i> Added By Admin {{ merchantuser.is_added_by_admin }}</span></p>
         <div class="article-cta">
             <label class="custom-switch mt-2" style="float:left">
-                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" {% if merchantuser.auth_user_id.is_active == 1 %}checked{% endif %}>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" value="{{ merchantuser.auth_user_id.id }}" {% if merchantuser.auth_user_id.is_active == 1 %}checked{% endif %}>
                         <span class="custom-switch-indicator"></span>
                         <span class="custom-switch-description">ACTIVE</span>
             </label>
@@ -107,4 +107,29 @@ Merchant User List
 
 
 {% block custom_js %}
+<script>
+    $(".custom-switch-input").change(function(){
+        var is_active = $(this).prop('checked');
+        var user_id = $(this).val();
+
+        $.ajax({
+            url: "{% url 'update_user_status' %}",
+            type: "POST",
+            data: {
+                "user_id": user_id,
+                "is_active": is_active,
+            },
+            success: function(response){
+                if(response.error){
+                    alert(response.message);
+                } else {
+                    console.log(response.message);
+                }
+            },
+            error: function(){
+                alert("Error connecting to server");
+            }
+        });
+    });
+</script>
 {% endblock custom_js %}

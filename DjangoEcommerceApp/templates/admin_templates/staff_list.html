@@ -60,7 +60,7 @@ Staff User List
         <p class="no-margin"><span class="badge badge-info"><i class="fas fa-envelope-o "></i> Email : {{ staffuser.auth_user_id.email }}</span></p>
         <div class="article-cta">
             <label class="custom-switch mt-2" style="float:left">
-                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" {% if staffuser.auth_user_id.is_active == 1 %}checked{% endif %}>
+                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" value="{{ staffuser.auth_user_id.id }}" {% if staffuser.auth_user_id.is_active == 1 %}checked{% endif %}>
                         <span class="custom-switch-indicator"></span>
                         <span class="custom-switch-description">ACTIVE</span>
             </label>
@@ -102,4 +102,29 @@ Staff User List
 
 
 {% block custom_js %}
+<script>
+    $(".custom-switch-input").change(function(){
+        var is_active = $(this).prop('checked');
+        var user_id = $(this).val();
+
+        $.ajax({
+            url: "{% url 'update_user_status' %}",
+            type: "POST",
+            data: {
+                "user_id": user_id,
+                "is_active": is_active,
+            },
+            success: function(response){
+                if(response.error){
+                    alert(response.message);
+                } else {
+                    console.log(response.message);
+                }
+            },
+            error: function(){
+                alert("Error connecting to server");
+            }
+        });
+    });
+</script>
 {% endblock custom_js %}

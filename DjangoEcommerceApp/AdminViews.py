@@ -596,3 +596,19 @@ class CustomerUserUpdateView(SuccessMessageMixin,UpdateView):
         customeruser.save()
         messages.success(self.request,"Customer User Updated")
         return HttpResponseRedirect(reverse("customer_list"))
+
+from django.http import JsonResponse
+
+@csrf_exempt
+def update_user_status(request):
+    if request.method == "POST":
+        user_id = request.POST.get("user_id")
+        is_active = request.POST.get("is_active")
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            user.is_active = True if is_active == "true" else False
+            user.save()
+            return JsonResponse({"error": False, "message": "Successfully Updated Status"})
+        except Exception as e:
+            return JsonResponse({"error": True, "message": str(e)})
+    return JsonResponse({"error": True, "message": "Invalid Request"})

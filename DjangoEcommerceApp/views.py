@@ -18,6 +18,15 @@ def adminLoginProcess(request):
     username=request.POST.get("username")
     password=request.POST.get("password")
 
+    from DjangoEcommerceApp.models import CustomUser
+    try:
+        user_check = CustomUser.objects.get(username=username)
+        if not user_check.is_active:
+            messages.error(request,"Your account has been deactivated by the admin!")
+            return HttpResponseRedirect(reverse("admin_login"))
+    except CustomUser.DoesNotExist:
+        pass
+
     user=authenticate(request=request,username=username,password=password)
     if user is not None:
         login(request=request,user=user)
