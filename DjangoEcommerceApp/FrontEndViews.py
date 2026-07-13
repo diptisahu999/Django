@@ -5,24 +5,32 @@ from django.contrib import messages
 def home_page(request):
     categories = Categories.objects.filter(is_active=1)
     
-    products = Products.objects.filter(is_active=1).order_by('-id')[:12]
+    category_product_data = []
     
-    product_list = []
-    for product in products:
-        # Note: media_type choice in models is ((1,"Image"),(2,"Video")), but stored as CharField so might be "1"
-        media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).first()
-        if not media:
-            # Fallback to integer 1 just in case
-            media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).first()
-            
-        product_list.append({
-            'product': product,
-            'media': media
-        })
+    for category in categories:
+        # Fetch up to 8 products for each category to show in the horizontal slider
+        products = Products.objects.filter(subcategories_id__category_id=category, is_active=1).order_by('-id')[:8]
+        
+        if products.exists():
+            product_list = []
+            for product in products:
+                media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).first()
+                if not media:
+                    media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).first()
+                    
+                product_list.append({
+                    'product': product,
+                    'media': media
+                })
+                
+            category_product_data.append({
+                'category': category,
+                'products': product_list
+            })
 
     context = {
         'categories': categories,
-        'product_list': product_list,
+        'category_product_data': category_product_data,
     }
     return render(request, "front_templates/home.html", context)
 
@@ -67,3 +75,27 @@ def add_to_cart(request, product_id):
         return redirect(request.META.get('HTTP_REFERER', 'home_page'))
         
     return redirect('home_page')
+
+def category_product_list(request, category_slug):
+    categories = Categories.objects.filter(is_active=1)
+    current_category = get_object_or_404(Categories, url_slug=category_slug, is_active=1)
+    
+    products = Products.objects.filter(subcategories_id__category_id=current_category, is_active=1).order_by('-id')
+    
+    product_list = []
+    for product in products:
+        media = ProductMedia.objects.filter(product_id=product.id, media_type="1", is_active=1).first()
+        if not media:
+            media = ProductMedia.objects.filter(product_id=product.id, media_type=1, is_active=1).first()
+            
+        product_list.append({
+            'product': product,
+            'media': media
+        })
+        
+    context = {
+        'categories': categories,
+        'current_category': current_category,
+        'product_list': product_list,
+    }
+    return render(request, "front_templates/category_product_list.html", context)
