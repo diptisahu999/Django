@@ -29,7 +29,27 @@ def adminLoginProcess(request):
 
     user=authenticate(request=request,username=username,password=password)
     if user is not None:
+        session_cart = request.session.get('cart', {})
         login(request=request,user=user)
+        
+        if session_cart:
+            from DjangoEcommerceApp.models import CartItem, Products
+            for product_id_str, qty in session_cart.items():
+                try:
+                    product = Products.objects.get(id=int(product_id_str))
+                    cart_item, created = CartItem.objects.get_or_create(
+                        user=user,
+                        product=product,
+                        defaults={'quantity': qty}
+                    )
+                    if not created:
+                        cart_item.quantity += qty
+                        cart_item.save()
+                except Exception:
+                    pass
+            request.session['cart'] = {}
+            request.session.modified = True
+            
         if user.user_type == "4":
             return HttpResponseRedirect(reverse("home_page"))
         return HttpResponseRedirect(reverse("admin_home"))

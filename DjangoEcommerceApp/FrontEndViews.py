@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from DjangoEcommerceApp.models import Categories, Products, ProductMedia, ProductDetails, ProductAbout, ProductTags
+from DjangoEcommerceApp.models import Categories, Products, ProductMedia, ProductDetails, ProductAbout, ProductTags, CartItem
 from django.contrib import messages
 
 def home_page(request):
@@ -57,20 +57,34 @@ def add_to_cart(request, product_id):
     if request.method == "POST":
         qty = int(request.POST.get("qty", 1))
         
-        if 'cart' not in request.session:
-            request.session['cart'] = {}
-            
-        cart = request.session['cart']
-        pid = str(product_id)
-        
-        if pid in cart:
-            cart[pid] += qty
+        if request.user.is_authenticated:
+            try:
+                product = Products.objects.get(id=product_id)
+                cart_item, created = CartItem.objects.get_or_create(
+                    user=request.user,
+                    product=product,
+                    defaults={'quantity': qty}
+                )
+                if not created:
+                    cart_item.quantity += qty
+                    cart_item.save()
+            except Products.DoesNotExist:
+                pass
         else:
-            cart[pid] = qty
+            if 'cart' not in request.session:
+                request.session['cart'] = {}
+                
+            cart = request.session['cart']
+            pid = str(product_id)
             
-        request.session['cart'] = cart
-        request.session.modified = True
-        
+            if pid in cart:
+                cart[pid] += qty
+            else:
+                cart[pid] = qty
+                
+            request.session['cart'] = cart
+            request.session.modified = True
+            
         messages.success(request, "Item added to cart successfully!")
         return redirect(request.META.get('HTTP_REFERER', 'home_page'))
         
@@ -102,7 +116,14 @@ def category_product_list(request, category_slug):
 
 def cart_view(request):
     categories = Categories.objects.filter(is_active=1)
-    cart = request.session.get('cart', {})
+    
+    cart = {}
+    if request.user.is_authenticated:
+        db_cart = CartItem.objects.filter(user=request.user)
+        for item in db_cart:
+            cart[str(item.product.id)] = item.quantity
+    else:
+        cart = request.session.get('cart', {})
     
     cart_items = []
     subtotal = 0
@@ -147,21 +168,38 @@ def cart_view(request):
     return render(request, "front_templates/cart.html", context)
 
 def update_cart(request, product_id, action):
-    if 'cart' in request.session:
-        cart = request.session['cart']
-        pid = str(product_id)
-        
-        if pid in cart:
+    if request.user.is_authenticated:
+        try:
+            cart_item = CartItem.objects.get(user=request.user, product_id=product_id)
             if action == 'increase':
-                cart[pid] += 1
+                cart_item.quantity += 1
+                cart_item.save()
             elif action == 'decrease':
-                cart[pid] -= 1
-                if cart[pid] <= 0:
-                    del cart[pid]
+                cart_item.quantity -= 1
+                if cart_item.quantity <= 0:
+                    cart_item.delete()
+                else:
+                    cart_item.save()
             elif action == 'remove':
-                del cart[pid]
-                
-        request.session['cart'] = cart
-        request.session.modified = True
-        
+                cart_item.delete()
+        except CartItem.DoesNotExist:
+            pass
+    else:
+        if 'cart' in request.session:
+            cart = request.session['cart']
+            pid = str(product_id)
+            
+            if pid in cart:
+                if action == 'increase':
+                    cart[pid] += 1
+                elif action == 'decrease':
+                    cart[pid] -= 1
+                    if cart[pid] <= 0:
+                        del cart[pid]
+                elif action == 'remove':
+                    del cart[pid]
+                    
+            request.session['cart'] = cart
+            request.session.modified = True
+            
     return redirect('cart_view')

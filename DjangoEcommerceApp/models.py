@@ -164,6 +164,13 @@ class ProductVarientItems(models.Model):
     title=models.CharField(max_length=255)
     created_at=models.DateTimeField(auto_now_add=True)
 
+class CartItem(models.Model):
+    id=models.AutoField(primary_key=True)
+    user=models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    product=models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity=models.IntegerField(default=1)
+    created_at=models.DateTimeField(auto_now_add=True)
+
 class CustomerOrders(models.Model):
     id=models.AutoField(primary_key=True)
     product_id=models.ForeignKey(Products,on_delete=models.DO_NOTHING)
