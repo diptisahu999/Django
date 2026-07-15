@@ -1,0 +1,29 @@
+{% extends 'admin_templates/base_template.html' %}
+
+{% block page_title %}
+Activities
+{% endblock page_title %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Recent Activities</h4>
+            </div>
+            <div class="card-body">
+                <div class="empty-state" data-height="400" style="height: 400px;">
+                  <div class="empty-state-icon">
+                    <i class="fas fa-bolt"></i>
+                  </div>
+                  <h2>Activity Log</h2>
+                  <p class="lead">
+                    This is a foundational page for tracking activities. You can fetch and list recent system events or user logs here later.
+                  </p>
+                  <a href="#" class="btn btn-primary mt-4">Refresh Logs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

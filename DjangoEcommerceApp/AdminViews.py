@@ -629,3 +629,11 @@ def staff_delete(request, pk):
     except Exception as e:
         messages.error(request, f"Error deleting staff user: {str(e)}")
     return HttpResponseRedirect(reverse("staff_list"))
+
+@login_required(login_url="/admin/")
+def admin_settings(request):
+    return render(request, "admin_templates/settings.html")
+
+@login_required(login_url="/admin/")
+def admin_activities(request):
+    return render(request, "admin_templates/activities.html")

@@ -68,5 +68,9 @@ urlpatterns = [
     path('customer_list',AdminViews.CustomerUserListView.as_view(),name="customer_list"),
     path('customer_update/<slug:pk>',AdminViews.CustomerUserUpdateView.as_view(),name="customer_update"),
     path('update_user_status',AdminViews.update_user_status,name="update_user_status"),
+    
+    # Settings and Activities
+    path('settings/', AdminViews.admin_settings, name="admin_settings"),
+    path('activities/', AdminViews.admin_activities, name="admin_activities"),
 
 ]
