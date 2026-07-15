@@ -18,7 +18,7 @@ def admin_home(request):
 class CategoriesListView(ListView):
     model=Categories
     template_name="admin_templates/category_list.html"
-    paginate_by=3
+    paginate_by=4
 
     def get_queryset(self):
         filter_val=self.request.GET.get("filter","")
@@ -54,7 +54,7 @@ class CategoriesUpdate(SuccessMessageMixin,UpdateView):
 class SubCategoriesListView(ListView):
     model=SubCategories
     template_name="admin_templates/sub_category_list.html"
-    paginate_by=3
+    paginate_by=4
 
     def get_queryset(self):
         filter_val=self.request.GET.get("filter","")
@@ -89,7 +89,7 @@ class SubCategoriesUpdate(SuccessMessageMixin,UpdateView):
 class MerchantUserListView(ListView):
     model=MerchantUser
     template_name="admin_templates/merchant_list.html"
-    paginate_by=3
+    paginate_by=4
 
     def get_queryset(self):
         filter_val=self.request.GET.get("filter","")
@@ -261,7 +261,7 @@ def file_upload(request):
 class ProductListView(ListView):
     model=Products
     template_name="admin_templates/product_list.html"
-    paginate_by=3
+    paginate_by=4
 
     def get_queryset(self):
         filter_val=self.request.GET.get("filter","")
@@ -450,7 +450,7 @@ class ProductAddStocks(View):
 class StaffUserListView(ListView):
     model=StaffUser
     template_name="admin_templates/staff_list.html"
-    paginate_by=3
+    paginate_by=4
 
     def get_queryset(self):
         filter_val=self.request.GET.get("filter","")
@@ -529,7 +529,7 @@ class StaffUserUpdateView(SuccessMessageMixin,UpdateView):
 class CustomerUserListView(ListView):
     model=CustomerUser
     template_name="admin_templates/customer_list.html"
-    paginate_by=3
+    paginate_by=4
 
     def get_queryset(self):
         filter_val=self.request.GET.get("filter","")
