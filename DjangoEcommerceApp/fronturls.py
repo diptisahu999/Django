@@ -8,4 +8,6 @@ urlpatterns = [
     path('cart/', FrontEndViews.cart_view, name="cart_view"),
     path('update_cart/<int:product_id>/<str:action>/', FrontEndViews.update_cart, name="update_cart"),
     path('add_to_cart/<int:product_id>/', FrontEndViews.add_to_cart, name="add_to_cart"),
+    path('signup/', FrontEndViews.signup, name="signup"),
+    path('profile/', FrontEndViews.profile_view, name="profile_view"),
 ]

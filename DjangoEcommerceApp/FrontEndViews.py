@@ -203,3 +203,88 @@ def update_cart(request, product_id, action):
             request.session.modified = True
             
     return redirect('cart_view')
+
+def signup(request):
+    categories = Categories.objects.filter(is_active=1)
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        
+        from DjangoEcommerceApp.models import CustomUser
+        try:
+            # Create user
+            user = CustomUser.objects.create_user(
+                username=username, 
+                password=password, 
+                email=email, 
+                first_name=first_name, 
+                last_name=last_name, 
+                user_type=4
+            )
+            # The signal in models.py will automatically create the CustomerUser profile
+            
+            # Log the user in
+            from django.contrib.auth import login
+            login(request, user)
+            
+            messages.success(request, "Account created successfully!")
+            return redirect('home_page')
+            
+        except Exception as e:
+            messages.error(request, "Error creating account. Username or email might already exist.")
+            
+    context = {
+        'categories': categories,
+    }
+    return render(request, "front_templates/signup.html", context)
+
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+
+@login_required(login_url="/admindashboard/admin/")
+def profile_view(request):
+    categories = Categories.objects.filter(is_active=1)
+    user = request.user
+    
+    if request.method == "POST":
+        user.first_name = request.POST.get("first_name")
+        user.last_name = request.POST.get("last_name")
+        user.email = request.POST.get("email")
+        
+        password = request.POST.get("password")
+        if password:
+            user.set_password(password)
+            from django.contrib.auth import update_session_auth_hash
+            update_session_auth_hash(request, user)
+            
+        user.save()
+        
+        if request.FILES.get("profile_pic", False):
+            profile_pic = request.FILES["profile_pic"]
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
+            
+            if str(user.user_type) == "4":
+                user.customeruser.profile_pic = profile_pic_url
+                user.customeruser.save()
+            elif str(user.user_type) == "3":
+                user.merchantuser.profile_pic = profile_pic_url
+                user.merchantuser.save()
+            elif str(user.user_type) == "2":
+                user.staffuser.profile_pic = profile_pic_url
+                user.staffuser.save()
+            elif str(user.user_type) == "1":
+                user.adminuser.profile_pic = profile_pic_url
+                user.adminuser.save()
+                
+        messages.success(request, "Profile updated successfully!")
+        return redirect('profile_view')
+        
+    context = {
+        'categories': categories,
+    }
+    return render(request, "front_templates/profile.html", context)
