@@ -46,7 +46,7 @@ Sub Category List
 <div class="row">
 {% for subcategory in subcategories_list %}
 <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-    <article class="article article-style-b">
+    <article class="article article-style-b d-flex flex-column h-100">
         <div class="article-header">
         <div class="article-image" data-background="/media/{{ subcategory.thumbnail }}" style="background-image: url(&quot;assets/img/news/img13.jpg&quot;);">
         </div>
@@ -54,17 +54,20 @@ Sub Category List
             <div class="article-badge-item bg-danger"><i class="fas fa-fire"></i>{{ subcategory.title }}</div>
         </div>
         </div>
-        <div class="article-details">
+        <div class="article-details d-flex flex-column flex-grow-1">
         <p><span class="badge badge-primary">{{ subcategory.category_id.title }}</span></p>
         <p>{{ subcategory.description }}</p>
         <p><span class="badge badge-warning">Url Slug : {{ subcategory.url_slug }}</span></p>
-        <div class="article-cta">
-            <label class="custom-switch mt-2" style="float:left">
+        <div class="article-cta mt-auto" style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="custom-switch" style="margin-bottom: 0;">
                         <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" {% if subcategory.is_active == 1 %}checked{% endif %}>
                         <span class="custom-switch-indicator"></span>
                         <span class="custom-switch-description">ACTIVE</span>
             </label>
-            <a href="{% url 'sub_category_update' subcategory.id %}" class="btn btn-warning">EDIT <i class="fas fa-chevron-right"></i></a>
+            <div>
+                <a href="{% url 'sub_category_update' subcategory.id %}" class="btn btn-warning btn-sm">EDIT</a>
+                <a href="{% url 'sub_category_delete' subcategory.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this subcategory?');" title="Delete"><i class="fas fa-trash"></i></a>
+            </div>
         </div>
         </div>
     </article>

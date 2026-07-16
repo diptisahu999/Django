@@ -86,6 +86,17 @@ class SubCategoriesUpdate(SuccessMessageMixin,UpdateView):
     fields="__all__"
     template_name="admin_templates/sub_category_update.html"
 
+class SubCategoriesDelete(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            sub_category = SubCategories.objects.get(id=kwargs['pk'])
+            sub_category.delete()
+            messages.success(request, "Sub Category Deleted Successfully")
+        except Exception as e:
+            messages.error(request, f"Error deleting sub category: {str(e)}")
+        return HttpResponseRedirect(reverse("sub_category_list"))
+
+
 class MerchantUserListView(ListView):
     model=MerchantUser
     template_name="admin_templates/merchant_list.html"

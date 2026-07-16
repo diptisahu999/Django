@@ -127,24 +127,19 @@
                     <div class="small text-primary mb-2">FREE scheduled delivery as soon as <strong>Saturday, 18 July, 7 am - 9 pm</strong>. <a href="#">Details</a></div>
                     <div class="small mb-3"><a href="#" class="text-primary"><i class="fas fa-map-marker-alt mr-1"></i> Delivering to Surat 395007 - Update location</a></div>
                     
-                    <h5 class="text-success font-weight-bold mb-3">In stock</h5>
+                    <h5 class="text-success font-weight-bold mb-2">In stock</h5>
                     
                     <form action="{% url 'add_to_cart' product.id %}" method="POST">
                         {% csrf_token %}
-                        <div class="form-group mb-3">
-                            <label for="qty" class="sr-only">Quantity:</label>
-                            <div class="input-group input-group-sm">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-light text-dark font-weight-bold">Quantity:</span>
-                                </div>
-                                <select name="qty" id="qty" class="custom-select shadow-sm font-weight-bold">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <label for="qty" class="mb-0 mr-2 text-dark font-weight-bold" style="font-size: 14px;">Quantity:</label>
+                            <select name="qty" id="qty" class="custom-select custom-select-sm shadow-sm bg-light font-weight-bold" style="width: auto; min-width: 65px; border-radius: 7px; border-color: #d5d9d9; cursor: pointer;">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
                         </div>
                         
                         <button type="submit" class="btn btn-warning btn-block rounded-pill font-weight-bold mb-2 shadow-sm">Add to cart</button>

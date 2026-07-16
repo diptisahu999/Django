@@ -41,6 +41,7 @@ urlpatterns = [
     path('sub_category_list',AdminViews.SubCategoriesListView.as_view(),name="sub_category_list"),
     path('sub_category_create',AdminViews.SubCategoriesCreate.as_view(),name="sub_category_create"),
     path('sub_category_update/<slug:pk>',AdminViews.SubCategoriesUpdate.as_view(),name="sub_category_update"),
+    path('sub_category_delete/<slug:pk>',AdminViews.SubCategoriesDelete.as_view(),name="sub_category_delete"),
 
     #Merchant User
     path('merchant_create',AdminViews.MerchantUserCreateView.as_view(),name="merchant_create"),

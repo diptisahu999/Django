@@ -90,30 +90,89 @@
     {% block content %}
     {% endblock content %}
 
+    <!-- Back to top -->
+    <div class="container-fluid p-0 mt-5">
+        <a href="#" class="btn btn-block text-white rounded-0 py-3 font-weight-bold" style="background-color: #37475A; font-size: 14px;">Back to top</a>
+    </div>
+    
     <!-- Footer -->
-    <footer class="bg-white text-center text-lg-start mt-5 shadow-sm border-top pt-4">
-      <div class="container p-4">
+    <footer class="text-white text-center text-lg-start" style="background-color: #232F3E;">
+      <div class="container py-5">
         <div class="row">
-          <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-            <h5 class="text-uppercase text-primary font-weight-bold">SuperCodersStore</h5>
-            <p class="text-muted">
-              The best multi-vendor marketplace built with Django.
-            </p>
+          <!-- Column 1 -->
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <h5 class="font-weight-bold mb-3" style="font-size: 16px;">Get to Know Us</h5>
+            <ul class="list-unstyled mb-0" style="font-size: 14px; line-height: 2.2;">
+              <li><a href="#!" class="text-white text-decoration-none footer-link">About SuperCodersStore</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Careers</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Press Releases</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">SuperCoders Science</a></li>
+            </ul>
           </div>
-          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h5 class="text-uppercase font-weight-bold">Links</h5>
-            <ul class="list-unstyled mb-0">
-              <li><a href="#!" class="text-muted">About Us</a></li>
-              <li><a href="#!" class="text-muted">Contact</a></li>
-              <li><a href="#!" class="text-muted">Terms of Service</a></li>
+          <!-- Column 2 -->
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <h5 class="font-weight-bold mb-3" style="font-size: 16px;">Connect with Us</h5>
+            <ul class="list-unstyled mb-0" style="font-size: 14px; line-height: 2.2;">
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Facebook</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Twitter</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Instagram</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">LinkedIn</a></li>
+            </ul>
+          </div>
+          <!-- Column 3 -->
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <h5 class="font-weight-bold mb-3" style="font-size: 16px;">Make Money with Us</h5>
+            <ul class="list-unstyled mb-0" style="font-size: 14px; line-height: 2.2;">
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Sell on SuperCoders</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Protect and Build Your Brand</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Global Selling</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Become an Affiliate</a></li>
+            </ul>
+          </div>
+          <!-- Column 4 -->
+          <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+            <h5 class="font-weight-bold mb-3" style="font-size: 16px;">Let Us Help You</h5>
+            <ul class="list-unstyled mb-0" style="font-size: 14px; line-height: 2.2;">
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Your Account</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Returns Centre</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">100% Purchase Protection</a></li>
+              <li><a href="#!" class="text-white text-decoration-none footer-link">Help</a></li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="text-center p-3 bg-light text-muted">
-        © 2026 Copyright SuperCodersStore
+      
+      <!-- Brand & Settings Row -->
+      <div class="border-top py-4" style="border-color: #3A4553 !important;">
+          <div class="container d-flex justify-content-center align-items-center flex-wrap">
+              <a class="navbar-brand font-weight-bold text-white mr-5" href="{% url 'home_page' %}" style="font-size: 1.5rem;">
+                  <i class="fas fa-shopping-cart mr-2 text-warning"></i>SuperCodersStore
+              </a>
+              <div class="d-flex flex-wrap mt-3 mt-md-0" style="gap: 10px;">
+                  <button class="btn btn-outline-light btn-sm px-3 rounded shadow-sm d-flex align-items-center"><i class="fas fa-globe mr-2"></i>English</button>
+                  <button class="btn btn-outline-light btn-sm px-3 rounded shadow-sm">₹ INR - Indian Rupee</button>
+                  <button class="btn btn-outline-light btn-sm px-3 rounded shadow-sm d-flex align-items-center"><i class="fas fa-flag mr-2"></i>India</button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Bottom Legal Row -->
+      <div class="text-center p-4" style="background-color: #131A22; font-size: 13px;">
+          <div class="mb-2">
+              <a href="#!" class="text-white text-decoration-none mx-3 footer-link">Conditions of Use & Sale</a>
+              <a href="#!" class="text-white text-decoration-none mx-3 footer-link">Privacy Notice</a>
+              <a href="#!" class="text-white text-decoration-none mx-3 footer-link">Interest-Based Ads</a>
+          </div>
+          <span style="color: #999;">© 2026 Copyright SuperCodersStore, Inc. or its affiliates</span>
       </div>
     </footer>
+    
+    <style>
+        .footer-link { transition: color 0.2s ease-in-out; }
+        .footer-link:hover { text-decoration: underline !important; color: #f90 !important; }
+        .btn-outline-light { border-color: #848688; color: #CCCCCC; }
+        .btn-outline-light:hover { background-color: transparent; border-color: #CCCCCC; color: #fff; }
+    </style>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="{% static '/modules/jquery.min.js' %}"></script>
