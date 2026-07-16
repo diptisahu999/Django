@@ -45,27 +45,28 @@ Product List
 </div>
 <div class="row">
 {% for product in object_list %}
-<div class="col-12 col-sm-6 col-md-6 col-lg-3">
-    <article class="article article-style-b">
+<div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4">
+    <article class="article article-style-b d-flex flex-column h-100 mb-0">
         <div class="article-header">
-        <div class="article-image" data-background="{{ product.media.media_content }}" style="background-image: url(&quot;assets/img/news/img13.jpg&quot;);">
+        <div class="article-image" {% if product.media %} data-background="{{ product.media.media_content }}" style="background-image: url('{{ product.media.media_content }}');" {% else %} data-background="/static/img/news/img13.jpg" style="background-image: url('/static/img/news/img13.jpg');" {% endif %}>
         </div>
         <div class="article-badge">
             <div class="article-badge-item bg-danger"><i class="fas fa-fire"></i>{{ product.product.product_name }}</div>
         </div>
         </div>
-        <div class="article-details">
+        <div class="article-details d-flex flex-column flex-grow-1">
         <p><span class="badge badge-primary">{{ product.product.subcategories_id.title }}</span></p>
-        <p>{{ subcategory.description }}</p>
+        <p>{{ product.product.product_description|truncatechars:60 }}</p>
         <p><span class="badge badge-warning">Url Slug : {{ product.product.url_slug }}</span></p>
-        <div class="article-cta">
-            <label class="custom-switch mt-2" style="float:left">
-                        <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" {% if product.product.is_active == 1 %}checked{% endif %}>
-                        <span class="custom-switch-indicator"></span>
-                        <span class="custom-switch-description">ACTIVE</span>
-            </label>
-            <a href="{% url 'product_edit' product_id=product.product.id %}" class="btn btn-warning ">EDIT <i class="fas fa-chevron-right"></i></a>
-            <div><br></div>
+        <div class="article-cta mt-auto">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <label class="custom-switch m-0">
+                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" {% if product.product.is_active == 1 %}checked{% endif %}>
+                            <span class="custom-switch-indicator"></span>
+                            <span class="custom-switch-description">ACTIVE</span>
+                </label>
+                <a href="{% url 'product_edit' product_id=product.product.id %}" class="btn btn-warning">EDIT <i class="fas fa-chevron-right"></i></a>
+            </div>
             <a href="{% url 'product_add_media' product_id=product.product.id %}" class="btn btn-danger btn-block">ADD MEDIA <i class="fas fa-chevron-right"></i></a>
             <a href="{% url 'product_edit_media' product_id=product.product.id %}" class="btn btn-success btn-block">EDIT MEDIA <i class="fas fa-chevron-right"></i></a>
             <a href="{% url 'product_add_stocks' product_id=product.product.id %}" class="btn btn-primary btn-block">ADD Stocks <i class="fas fa-chevron-right"></i></a>

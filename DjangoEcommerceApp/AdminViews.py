@@ -50,6 +50,16 @@ class CategoriesUpdate(SuccessMessageMixin,UpdateView):
     fields="__all__"
     template_name="admin_templates/category_update.html"
 
+class CategoriesDelete(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            category = Categories.objects.get(id=kwargs['pk'])
+            category.delete()
+            messages.success(request, "Category Deleted!")
+        except Exception as e:
+            messages.error(request, "Error deleting Category")
+        return HttpResponseRedirect(reverse("category_list"))
+
 
 class SubCategoriesListView(ListView):
     model=SubCategories

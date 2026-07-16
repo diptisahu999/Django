@@ -35,6 +35,7 @@ urlpatterns = [
     path('category_list',AdminViews.CategoriesListView.as_view(),name="category_list"),
     path('category_create',AdminViews.CategoriesCreate.as_view(),name="category_create"),
     path('category_update/<slug:pk>',AdminViews.CategoriesUpdate.as_view(),name="category_update"),
+    path('category_delete/<slug:pk>',AdminViews.CategoriesDelete.as_view(),name="category_delete"),
 
     #SUBCATEGORIES
 

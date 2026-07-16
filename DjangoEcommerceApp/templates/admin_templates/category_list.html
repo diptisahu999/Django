@@ -46,7 +46,7 @@ Category List
 <div class="row">
 {% for category in categories_list %}
 <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-    <article class="article article-style-b">
+    <article class="article article-style-b d-flex flex-column h-100">
         <div class="article-header">
         <div class="article-image" data-background="/media/{{ category.thumbnail }}" style="background-image: url(&quot;assets/img/news/img13.jpg&quot;);">
         </div>
@@ -54,16 +54,19 @@ Category List
             <div class="article-badge-item bg-danger"><i class="fas fa-fire"></i>{{ category.title }}</div>
         </div>
         </div>
-        <div class="article-details">
+        <div class="article-details d-flex flex-column flex-grow-1">
         <p>{{ category.description }}</p>
         <p><span class="badge badge-warning">Url Slug : {{ category.url_slug }}</span></p>
-        <div class="article-cta">
-            <label class="custom-switch mt-2" style="float:left">
+        <div class="article-cta mt-auto" style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="custom-switch" style="margin-bottom: 0;">
                         <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" {% if category.is_active == 1 %}checked{% endif %}>
                         <span class="custom-switch-indicator"></span>
                         <span class="custom-switch-description">ACTIVE</span>
             </label>
-            <a href="{% url 'category_update' category.id %}" class="btn btn-warning">EDIT <i class="fas fa-chevron-right"></i></a>
+            <div>
+                <a href="{% url 'category_update' category.id %}" class="btn btn-warning">EDIT <i class="fas fa-chevron-right"></i></a>
+                <a href="{% url 'category_delete' category.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Category?');"><i class="fas fa-trash"></i></a>
+            </div>
         </div>
         </div>
     </article>
